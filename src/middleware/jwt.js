@@ -26,8 +26,11 @@ const generateToken = (data) => {
     let token = ""
     try {
         token = jwt.sign({ 
+            id:data.id,
             phone: data.phone, 
-            email: data.email },
+            email: data.email,
+            role: data.role
+             },
             process.env.TOKEN_KEY,
             {
                 expiresIn: "2h",

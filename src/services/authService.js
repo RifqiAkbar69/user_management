@@ -1,4 +1,5 @@
 const userRepository = require("../repositories/userRepository.js")
+const roleRepository = require("../repositories/roleRepository.js")
 const jwt = require("../middleware/jwt.js")
 const uuId = require("uuid")
 const bcrypt = require("bcrypt")
@@ -111,9 +112,15 @@ const login = async (req, res) => {
     }
 
     //todo generate jwttoken
+    const reqRole = {
+        id: resUser.rows[0].id
+    }
+    const resRole = await roleRepository.getRoleByUserId(reqRole)
     const token = await jwt.generateToken({
+        id: resUser.rows[0].id,
         phone: phone,
         email: resUser.rows[0].email,
+        role: resRole.rows
     })
     if (token == "") {
         return res.status(401).send({

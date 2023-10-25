@@ -20,7 +20,7 @@ const createUser = (data) => {
 }
 
 const findUserByPhone = (phone) => {
-    const queryCek = `select phone, email, password from tbl_user where phone = $1`
+    const queryCek = `select id,phone, email, password from tbl_user where phone = $1`
     return pool.query(queryCek, [phone])
 }
 
@@ -40,9 +40,8 @@ const editUser = (data) => {
 }
 
 const getUserById = (data) => {
-    const queryGetUserById = `select tu.id,tu.name,tu.phone,tu.address,tu.email,tr.role_name  from tbl_user tu
-                              join tbl_user_role tur on tur.user_id = tu.id 
-                              join tbl_role tr on tr.id = tur.role_id 
+    const queryGetUserById = `select id,name,phone,address,email
+                              from tbl_user tu
                               where tu.id = $1`
     
     return pool.query(queryGetUserById, [

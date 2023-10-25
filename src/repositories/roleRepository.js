@@ -19,7 +19,19 @@ const findRoleById = (data) => {
     ])
 } 
 
+const getRoleByUserId = (data) => {
+    const getRoleByUserId = `select role_name as role
+                        from tbl_role tr
+                        join tbl_user_role tur on tr.id = tur.role_id 
+                        where tur.user_id = $1`
+
+    return pool.query(getRoleByUserId, [
+        data.id
+    ])
+}
+
 module.exports = {
     insertUserRole,
-    findRoleById
+    findRoleById,
+    getRoleByUserId
 }

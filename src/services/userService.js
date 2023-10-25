@@ -25,7 +25,7 @@ const getAllUsers = async (req, res) => {
 const getUserById = async (req, res) => {
     try {
         const { id } = req.params
-        //todo get user by id
+        //todo get user by id and get role
         const params = {
             id: id
         }
@@ -35,13 +35,16 @@ const getUserById = async (req, res) => {
                 message: " Data not found"
             })
         }
-        else {
-            return res.status(200).send({
-                message: "Berhasil Get User",
-                data: dataUserById.rows
-            })
+        const data = dataUserById.rows[0]
+        data.role = []
+        const getRoleByUserId = await roleRepository.getRoleByUserId(params)
+        if (getRoleByUserId.rowCount > 0) {
+            data.role = getRoleByUserId.rows
         }
-
+        return res.status(200).send({
+            message: "Berhasil Get User",
+            data: data
+        })
     }
     catch (error) {
         return res.status(500).send({
